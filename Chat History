@@ -1,0 +1,143 @@
+I have a project I would like to implement, specifically as follows:
+AI Prototype Challenge
+Forward-deployed AI consultants solve real business problems with AI—fast. You're embedded
+with clients, turning ambiguous challenges into working solutions that ship.
+A prospective client has approached your firm with a business challenge. Your job is to:
+• Build a working prototype that demonstrates a viable AI solution
+• Prepare a single slide that pitches your solution to client stakeholders
+• Demo and defend your approach in a live interview
+We're evaluating solution design, technical execution, communication, and how you work under
+constraints. Time is tight by design, and tradeoffs are expected—be efficient, be pragmatic, and
+get creative. We'd rather see clever problem-solving than pixel-perfect polish.
+Scenarios
+Choose one scenario that best showcases your strengths:
+• Manufacturing: A plant operator wants floor supervisors to get answers from the right
+documentation. The system should intelligently route questions to the appropriate source
+(safety procedures, maintenance manuals, or quality control standards) and provide accurate
+answers.
+
+Lets build a quick architecture diagram so I can scope out what are the various aspects I will need to build here, as by the end I want to have a viable prototype to show to the interviewer
+
+Searched the web
+Yes. Streamlit Community Cloud is the free option, and the plan already has a fallback for it.
+
+Streamlit Community Cloud:
+
+Cost and limits: It’s free, and each app gets up to 2 CPU cores and about 2.7 GB of memory. That’s plenty for this app, since the embedding model is around 130 MB. 
+streamlit
+Privacy: You can have one private app, so the demo doesn’t have to be public. 
+streamlit
+Deploying: You connect a GitHub repo, and it redeploys every time you push.
+Trade-offs:
+It doesn’t use Docker, so the app builds the index the first time it starts. That’s the first-start fallback the plan already includes.
+Apps with no traffic for 12 hours go to sleep, so open it a few minutes before your interview. 
+streamlit
+Settings like the API key go in Streamlit’s secrets settings instead of a .env file.
+I’d skip Hugging Face Spaces. It used to be the other free choice, but its docs now say Gradio and Docker Spaces require a paid plan to create. 
+huggingface
+
+To be clear, hosting is only one cost. The Anthropic API charges per question no matter where the app runs, but at prototype volume that’s cents, not dollars. The password screen stops strangers from using it.
+
+Send Agent B this change:
+
+Change of cloud target for Component 10: drop Cloud Run. Deploy to Streamlit
+Community Cloud (free tier) instead.
+
+- Keep the Dockerfile and docker-compose.yml for local use only (both profiles,
+  as specified). Do not write scripts/deploy_cloudrun.sh.
+- Community Cloud runs ui/streamlit_app.py from the GitHub repo with no Docker:
+  - On first start, build the PDFs if they're missing and run the ingest inside
+    st.cache_resource when ./qdrant_data is empty. Show a spinner ("Building
+    document index, first start only") and make it safe to re-run.
+  - Read ANTHROPIC_API_KEY and APP_PASSWORD from st.secrets, falling back to env
+    vars, so the same code works locally and in the cloud. Add
+    .streamlit/secrets.toml.example and gitignore the real secrets.toml.
+  - Make sure requirements.txt installs cleanly on Community Cloud's Python 3.11
+    image (pin streamlit, keep pymupdf and fastembed). Add a runtime note in
+    README if a specific Python version must be selected in the deploy dialog.
+  - The fastembed model downloads at first start there. Point FASTEMBED_CACHE at
+    a writable directory.
+- README "Deploy" section: step-by-step Community Cloud instructions (connect
+  repo, set main file to ui/streamlit_app.py, paste secrets, set the app to
+  private), plus a note that the app sleeps after 12h idle.
+- Acceptance: a fresh clone runs with `streamlit run ui/streamlit_app.py` and
+  only secrets.toml set, with no manual ingest step. It builds the index on first
+  load, and the password gate works.
+You’ll need to push the repo to GitHub. Make it private if you don’t want the code public.
+
+Sources:
+
+Streamlit docs: Manage your app (resource limits, hibernation)
+Streamlit forum: Community Cloud limits
+Hugging Face Spaces overview
+Just gonna do a local deployment for now as we have a time constraint
+
+That makes sense. A local run is enough for a live demo, and you can describe the cloud setup as the next step. Here’s a shorter Component 10 for Agent B:
+
+Scope change for Component 10: local deployment only, no cloud. Skip Cloud Run,
+Streamlit Community Cloud and Docker.
+
+1. Makefile targets (or a run.sh if make isn't available):
+   - setup: create venv, pip install -r requirements.txt
+   - corpus: python scripts/build_corpus.py
+   - ingest: python -m app.ingest --reset
+   - run: streamlit run ui/streamlit_app.py
+   - test: pytest -m "not live"
+   - eval: python eval/run_eval.py
+   - demo: corpus + ingest + run in one command
+2. Startup checks in the UI: show a clear error if ANTHROPIC_API_KEY is missing or
+   the Qdrant collection is empty (tell the user to run `make ingest`). Don't
+   build the index automatically.
+3. Keep the APP_PASSWORD gate (off when unset).
+4. README "Run locally" section: clone → .env from .env.example → make setup →
+   make demo. Add a short "Path to production" note: Docker image with the model
+   and index baked in, Qdrant server via QDRANT_URL, a cloud host with secrets
+   management. Describe it only; don't build it.
+5. Acceptance: from a fresh clone with only .env filled in, `make setup && make
+   demo` opens the app, and a real question returns a cited answer.
+The Makefile and README are about 15 minutes of work.
+
+After that, the remaining work is your test questions, the scoring script run on them, and the README and demo script (Component 9). I can start on the safety questions whenever you’re ready.
+
+Lastlyy I need a presentation to a non technical stakeholder, I will explain complex things to them myself. PRepare me a prompt to send to gamma so I can show it to them, keep it concise
+
+Drafting a Gamma prompt for a single pitch slide.
+Drafting a Gamma prompt for a single pitch slide.
+The challenge asks for a single slide, so this prompt has Gamma build that one slide. There’s also an optional line to add if you want a short backup deck.
+
+Create a single presentation slide pitching an AI solution to a non-technical
+manufacturing plant manager. Clean, professional, industrial look (navy/steel
+gray with one safety-orange accent). Minimal text, large readable type, no
+jargon, no code.
+
+Title: "Right answer, right document, right away"
+Subtitle: An AI assistant that gives floor supervisors trusted answers from your
+own safety, maintenance and quality documentation.
+
+Layout: three columns plus a bottom strip.
+
+Column 1 — The problem
+- Supervisors lose time searching three separate sets of documents
+- Wrong or outdated answers lead to downtime, defects or injuries
+- Documents sometimes contradict each other, and nobody notices
+
+Column 2 — How it works (simple 3-step visual: Ask → Route → Answer)
+- Ask a question in plain language
+- The assistant identifies which documents apply: safety, maintenance, quality,
+  or more than one
+- It answers using only your documents, with the exact page cited
+
+Column 3 — Why you can trust it
+- Every answer shows its source page
+- Says "not covered" instead of guessing
+- Flags conflicting documents and names who should decide
+
+Bottom strip — Results and next steps
+- Tested on [X] real-world questions: [Y]% routed to the right documents
+  (placeholder, I'll fill in)
+- Bonus: produces a report of where your documentation contradicts itself
+- Next step: 4-week pilot on one production line with your real documents
+If you want a backup deck as well, add this line at the top: “Also create a 5-slide version: title, problem, how it works, why you can trust it, pilot proposal.”
+
+Fill in the bracketed numbers once the scoring script has run on your test questions. The “Tested on X questions, Y% correct” line is the strongest claim on the slide.
+
