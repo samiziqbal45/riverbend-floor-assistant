@@ -1,0 +1,8 @@
+{"question": "Where do I put the lockout tag when servicing the filler?", "scores": {"safety": 0.9, "maintenance": 0.08, "quality": 0.02}, "reasoning": "Lockout/tagout is a hazard-control procedure."}
+{"question": "What gloves are required when handling caustic cleaner?", "scores": {"safety": 0.92, "maintenance": 0.03, "quality": 0.05}, "reasoning": "PPE selection is a safety topic."}
+{"question": "What is the preventive maintenance interval for the hydraulic oil filter?", "scores": {"safety": 0.03, "maintenance": 0.94, "quality": 0.03}, "reasoning": "PM schedules are maintenance documentation."}
+{"question": "The capper head is chattering and skipping caps; how do I troubleshoot it?", "scores": {"safety": 0.03, "maintenance": 0.92, "quality": 0.05}, "reasoning": "Equipment troubleshooting is maintenance."}
+{"question": "What is the acceptance limit for pallet label placement on incoming material?", "scores": {"safety": 0.02, "maintenance": 0.03, "quality": 0.95}, "reasoning": "Inspection acceptance criteria are quality."}
+{"question": "When do I have to place a lot on hold?", "scores": {"safety": 0.05, "maintenance": 0.05, "quality": 0.9}, "reasoning": "Holds and nonconformance are quality procedures."}
+{"question": "The press hydraulic hose is weeping oil, can I keep running while I order a replacement?", "scores": {"safety": 0.5, "maintenance": 0.45, "quality": 0.05}, "reasoning": "Spans a hazard decision and a repair/parts question."}
+{"question": "Fill volumes on the line are out of control limits after a changeover; what now?", "scores": {"safety": 0.02, "maintenance": 0.4, "quality": 0.58}, "reasoning": "SPC limits are quality, but the cause may be equipment adjustment."}

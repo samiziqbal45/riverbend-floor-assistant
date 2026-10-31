@@ -1,0 +1,42 @@
+# Default:            docker compose up
+#   app only, embedded Qdrant baked into the image (same as the cloud setup) -> :8080
+# Server profile:     docker compose --profile server up
+#   adds a Qdrant server, ingests into it, and runs a second app against it    -> :8081
+# Needs a .env file with ANTHROPIC_API_KEY (and optionally APP_PASSWORD).
+x-app: &app
+  build: .
+  image: riverbend-assistant
+  env_file: .env
+
+services:
+  app:
+    <<: *app
+    ports: ["8080:8080"]
+
+  qdrant:
+    profiles: ["server"]
+    image: qdrant/qdrant:latest
+    ports: ["6333:6333"]
+    volumes: ["qdrant_storage:/qdrant/storage"]
+
+  ingest:
+    <<: *app
+    profiles: ["server"]
+    depends_on: [qdrant]
+    environment:
+      QDRANT_URL: http://qdrant:6333
+    command: python -m app.ingest --reset
+    restart: "no"
+
+  app-server:
+    <<: *app
+    profiles: ["server"]
+    depends_on:
+      ingest:
+        condition: service_completed_successfully
+    environment:
+      QDRANT_URL: http://qdrant:6333
+    ports: ["8081:8080"]
+
+volumes:
+  qdrant_storage:

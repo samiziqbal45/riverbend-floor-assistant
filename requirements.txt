@@ -1,0 +1,12 @@
+qdrant-client
+fastembed
+anthropic
+streamlit==1.30.0
+pydantic
+python-dotenv
+pytest
+pandas
+matplotlib
+pymupdf
+reportlab
+markdown

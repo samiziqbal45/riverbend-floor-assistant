@@ -1,0 +1,9 @@
+qdrant_data/
+models/
+logs/
+.env
+eval/results/
+__pycache__/
+.pytest_cache/
+.venv/
+prompt.txt

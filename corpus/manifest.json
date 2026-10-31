@@ -1,0 +1,14 @@
+{
+  "lockout-tagout.pdf": {"doc": "Lockout/Tagout (LOTO) Procedure", "domain": "safety", "revision": "D", "effective_date": "2025-03-01", "owner": "EHS Lead"},
+  "ppe-matrix.pdf": {"doc": "Personal Protective Equipment (PPE) Matrix by Task", "domain": "safety", "revision": "C", "effective_date": "2024-09-15", "owner": "EHS Lead"},
+  "conveyor-jam-clearing.pdf": {"doc": "Conveyor Jam Clearing Safety Procedure", "domain": "safety", "revision": "B", "effective_date": "2025-06-10", "owner": "EHS Lead"},
+  "chemical-spill-response.pdf": {"doc": "Chemical Spill and Sanitizer Handling Response", "domain": "safety", "revision": "C", "effective_date": "2024-11-20", "owner": "EHS Lead"},
+  "rp200-pump-manual.pdf": {"doc": "RP-200 Centrifugal Pump Manual", "domain": "maintenance", "revision": "C", "effective_date": "2024-05-01", "owner": "Maintenance Supervisor"},
+  "cx4-capper-manual.pdf": {"doc": "CX-4 Capper Maintenance Manual", "domain": "maintenance", "revision": "B", "effective_date": "2023-08-14", "owner": "Maintenance Supervisor"},
+  "conveyor-maintenance-guide.pdf": {"doc": "Conveyor Maintenance and Jam Troubleshooting Guide", "domain": "maintenance", "revision": "A", "effective_date": "2022-04-05", "owner": "Maintenance Supervisor"},
+  "hydraulic-press-pm.pdf": {"doc": "Hydraulic Press Preventive Maintenance Checklist", "domain": "maintenance", "revision": "C", "effective_date": "2025-01-12", "owner": "Maintenance Supervisor"},
+  "cap-torque-spec.pdf": {"doc": "Cap Torque Specification and Inspection Method", "domain": "quality", "revision": "E", "effective_date": "2025-07-01", "owner": "Quality Engineer"},
+  "fill-weight-spec.pdf": {"doc": "Fill Weight and Volume Specification with SPC Limits", "domain": "quality", "revision": "D", "effective_date": "2025-02-18", "owner": "Quality Engineer"},
+  "nonconformance-hold.pdf": {"doc": "Nonconformance and Hold Procedure", "domain": "quality", "revision": "C", "effective_date": "2024-10-03", "owner": "Quality Engineer"},
+  "incoming-material-inspection.pdf": {"doc": "Incoming Material Inspection Standard", "domain": "quality", "revision": "B", "effective_date": "2024-06-25", "owner": "Quality Engineer"}
+}

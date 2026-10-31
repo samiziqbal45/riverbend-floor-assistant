@@ -1,0 +1,12 @@
+.env
+.env.*
+.git
+logs/
+eval/results/
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+# rebuilt inside the image
+qdrant_data/
+models/
